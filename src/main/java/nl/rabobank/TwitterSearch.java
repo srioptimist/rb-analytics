@@ -1,25 +1,21 @@
 package nl.rabobank;
 
-import twitter4j.*;
-import twitter4j.Query.ResultType;
-import twitter4j.auth.OAuth2Token;
-import twitter4j.conf.ConfigurationBuilder;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import twitter4j.Query;
+import twitter4j.Query.ResultType;
+import twitter4j.QueryResult;
+import twitter4j.RateLimitStatus;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.OAuth2Token;
+import twitter4j.conf.ConfigurationBuilder;
 
-public class Main {
+public class TwitterSearch {
 
-    private static final String NOT_FOUND = "NOT_FOUND";
     private static final String SEPERATOR = "\t";
     // Set this to your actual CONSUMER KEY and SECRET for your application as given to you by dev.twitter.com
     private static final String CONSUMER_KEY = "mqUyUcGBTDx5SDml3bdKgn1xO";
@@ -37,11 +33,12 @@ public class Main {
 
     // What we want to search for in this program. Justin Bieber always returns as many results as you could
     // ever want, so it's safe to assume we'll get multiple pages back...
-    //private static final String[] SEARCH_TERM = {"rabo","abn amro","ING bank"};
-    
-    //private static final String[] SEARCH_TERM = {"Kaart","pinpas","bankpas","Mobiel","mobiel bankieren","internet bankieren","internet banking","sparen","spaarrekening"};
-    
-    private static final String[] SEARCH_TERM = {"rabo","rabo bankpas"};
+    // private static final String[] SEARCH_TERM = {"rabo","abn amro","ING bank"};
+
+    // private static final String[] SEARCH_TERM =
+    // {"Kaart","pinpas","bankpas","Mobiel","mobiel bankieren","internet bankieren","internet banking","sparen","spaarrekening"};
+
+    private static final String[] SEARCH_TERM = { "rabo bankpas" };
 
     /**
      * Replace newlines and tabs in text with escaped versions to making printing cleaner
@@ -117,17 +114,14 @@ public class Main {
     }
 
     public static void main(String[] args) {
-       // Map<Long,Tweet> tweetMap = new HashMap<Long, Tweet>();
-       
-        for(String s:SEARCH_TERM){
-            List<Tweet> tweets = new ArrayList<Tweet>();
+        for (String s : SEARCH_TERM) {
+            List<Feeds> tweets = new ArrayList<Feeds>();
             tweets = getTweets(s);
-            writeToFile(tweets,s);
+            WriteToFile.write(tweets, s);
         }
-       
     }
 
-    public static List<Tweet> getTweets(String searchText) {
+    public static List<Feeds> getTweets(String searchText) {
         // We're curious how many tweets, in total, we've retrieved. Note that TWEETS_PER_QUERY is an upper limit,
         // but Twitter can and often will retrieve far fewer tweets
         int totalTweets = 0;
@@ -142,8 +136,7 @@ public class Main {
 
         Twitter twitter = getTwitter();
 
-        List<Tweet> tweets = new ArrayList<Tweet>();
-        
+        List<Feeds> feeds = new ArrayList<Feeds>();
 
         // Now do a simple search to show that the tokens work
         try {
@@ -228,24 +221,19 @@ public class Main {
                     }
 
                     // Do something with the tweet....
-                 //   System.out.printf("At %s, Name %s Location %s Email %s ScreenName %s said:  %s\n", s.getCreatedAt()
-                //            .toString(), s.getUser().getName(), s.getUser().getLocation(), s.getUser().getEmail(), s
-               //             .getUser().getScreenName(), cleanText(s.getText()));
-                    tweets.add(new Tweet(s.getCreatedAt().toString(), s.getUser().getName(), cleanText(s.getText()), s
-                            .getId(), s.getUser().getScreenName(), s.getUser().getEmail(), s.getUser().getLocation()));
-                    /*if(!tweetMap.containsKey(s
-                            .getId())){
-                    tweetMap.put(s
-                            .getId(), new Tweet(s.getCreatedAt().toString(), s.getUser().getName(), cleanText(s.getText()), s
-                            .getId(), s.getUser().getScreenName(), s.getUser().getEmail(), s.getUser().getLocation()));
-                    }*/
+                    // System.out.printf("At %s, Name %s Location %s Email %s ScreenName %s said:  %s\n",
+                    // s.getCreatedAt()
+                    // .toString(), s.getUser().getName(), s.getUser().getLocation(), s.getUser().getEmail(), s
+                    // .getUser().getScreenName(), cleanText(s.getText()));
+                    feeds.add(new Feeds(s.getCreatedAt().toString(), s.getUser().getName(), cleanText(s.getText()),
+                            String.valueOf(s.getId()), s.getUser().getEmail(), s.getUser().getLocation()));
                 }
 
                 // As part of what gets returned from Twitter when we make the search API call, we get an updated
                 // status on rate limits. We save this now so at the top of the loop we can decide whether we need
                 // to sleep or not before making the next call.
                 searchTweetsRateLimit = r.getRateLimitStatus();
-              
+
             }
 
         } catch (Exception e) {
@@ -258,35 +246,8 @@ public class Main {
 
         System.out.printf("\n\nA total of %d tweets retrieved\n", totalTweets);
         // That's all, folks!
-       // System.out.println("Size "+tweetMap.size());
-        return tweets;
+        // System.out.println("Size "+tweetMap.size());
+        return feeds;
     }
 
-    public static void writeToFile(List<Tweet> tweets, String keyWord) {
-        FileWriter file = null;
-        final DateFormat format = new SimpleDateFormat("ddMMM");
-        String d = format.format(new Date());
-        try {
-            String fileName = "C://temp//Tweets_"+keyWord+"_"+d+".txt";
-            file = new FileWriter(fileName);
-            for (Tweet tweet : tweets) {
-                file.write(tweet.getTweetDate() + SEPERATOR + checkEmpty(tweet.getTweetBy()) + SEPERATOR + checkEmpty(tweet.getLocation()) + SEPERATOR
-                        + checkEmpty(tweet.getScreenName()) + SEPERATOR + tweet.getTweet());
-                file.write(System.lineSeparator());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                file.flush();
-                file.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    private static String checkEmpty(final String value){
-        return StringUtils.isEmpty(value) ? NOT_FOUND : value;
-    }
 }
