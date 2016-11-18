@@ -1,0 +1,58 @@
+<!doctype html>
+<html ng-app="rbAnalyticsApp" ng-cloak="">
+<head>
+ <script src="angular.js"></script>
+<script src="app.js"></script>
+<script src="controller.js"></script>
+<style>
+table, th, td {
+    border: 1px solid green;
+}
+.reasons {
+	width:800px; 
+	margin:0 auto;
+	padding-top: 30px;
+	color: blue;
+}
+
+.back {
+	width:800px; 
+	margin:0 auto;
+	padding-top: 20px;
+}
+
+</style>
+</head>
+<body ng-controller="rbAnalyticsCtrl as rbAnalyticsC">
+
+<div class="reasons" ng-if="!tweets.length>0">
+	Enter your search text <input type="text" name="searchText" ng-model="searchText" /></br>
+	Submit : <input ng-click="searchTweets(searchText)" type="submit"/> 
+ </div>
+ <div class="reasons" ng-if="tweets.length>0">tweets collected from various social networks are listed below </div>
+<div class="reasons" ng-if="tweets.length>0">
+  <div style="float: left; width: 100px;"></div>  
+ <div id="chart-container" style="float: left; width: 600px;">
+ 	 <table >
+		  <tr>
+		    <th>S.no</th>
+		    <th>Tweet Date</th>
+		    <th>Tweet By</th>
+		    <th>Tweet</th>
+		  </tr>
+		  <tr ng-repeat="tweet in tweets">
+		  	<td>{{$index+1}}</td>
+		    <td>{{tweet.tweetDate}}</td> 
+		    <td>{{tweet.tweetBy}}</td>
+		    <td>{{tweet.tweet}}</td>
+		  </tr>
+		</table>
+ </div>
+ <div style="float: left; width: 100px;"></div> 
+ <br style="clear: left;" /> 
+</div>
+<div class="reasons" ng-if="tweets.length>0">
+	<input ng-click="clearTweets()" value="clear" type="submit"/>
+</div>
+</body>
+</html>
