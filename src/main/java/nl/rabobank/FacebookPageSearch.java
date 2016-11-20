@@ -69,7 +69,7 @@ public class FacebookPageSearch {
                         if (post != null && post.getMessage() != null && post.getMessage().contains(searchText))
                         {
                             feeds.add(new Feeds(post.getCreatedTime().toString(), post.getName(), post.getMessage(),
-                                    post.getId(), "", post.getPlace().getLocationAsString()));
+                                    post.getId(), "", post.getPlace() !=null ? post.getPlace().getLocationAsString() : null));
                             System.out.println(post.getCreatedTime() + " " + page.getName() + " " + post.getMessage());
                             noOfPost++;
                         }
