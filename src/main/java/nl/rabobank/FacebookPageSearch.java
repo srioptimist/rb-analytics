@@ -11,6 +11,8 @@ import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.Version;
+import com.restfb.types.Comment;
+import com.restfb.types.Comments;
 import com.restfb.types.Page;
 import com.restfb.types.Post;
 
@@ -21,7 +23,7 @@ import com.restfb.types.Post;
  */
 public class FacebookPageSearch {
 
-    private static final String[] SEARCH_TERM = { "rabo", "abn amro", "ING bank" };
+    private static final String[] SEARCH_TERM = { "rabobank", "abn amro", "ING bank" };
     
  // private static final String[] SEARCH_TERM =
     // {"Kaart","pinpas","bankpas","Mobiel","mobiel bankieren","internet bankieren","internet banking","sparen","spaarrekening"};
@@ -68,7 +70,7 @@ public class FacebookPageSearch {
                         // person,post.getPlace() gives correct place name of the person
                         if (post != null && post.getMessage() != null && post.getMessage().contains(searchText))
                         {
-                            feeds.add(new Feeds(post.getCreatedTime().toString(), post.getName(), post.getMessage(),
+                           feeds.add(new Feeds(post.getCreatedTime().toString(), post.getName(), post.getMessage(),
                                     post.getId(), "", post.getPlace() !=null ? post.getPlace().getLocationAsString() : null));
                             System.out.println(post.getCreatedTime() + " " + page.getName() + " " + post.getMessage());
                             noOfPost++;
