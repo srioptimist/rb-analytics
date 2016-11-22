@@ -33,7 +33,12 @@ for line in reader:
               }
             )
    response = request.execute()
-   k[1] = response['documentSentiment']['score']
+   x_list = response['sentences']
+   y = 0
+   for cou in x_list:
+       y = y + cou['sentiment']['score']
+     
+   k[1] = y
    k[2] = line[0]
    k[3] = translated_text
    writer.writerow(k)
