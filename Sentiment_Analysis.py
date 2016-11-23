@@ -10,7 +10,7 @@ api_key = 'AIzaSyChR_RVUHz6eBVUf9BgjKxJVCyHeiCNDXk'
 
 
 i = 0
-k = [0,0.0,'initialrow','translated tweet']
+k = [0,0.0,'initialrow','translated tweet','original scores']
 g = open('C:/Temp/Vishwesh/Text analytics/output.txt', 'w')
 f = open('C:/Temp/Vishwesh/Text analytics/tweets.txt', 'r')
 reader = csv.reader(f, delimiter='\t')
@@ -35,12 +35,19 @@ for line in reader:
    response = request.execute()
    x_list = response['sentences']
    y = 0
+   j = 0
+   ind_sc = ' ' 
    for cou in x_list:
-       y = y + cou['sentiment']['score']
+       score = cou['sentiment']['score'] 
+       y = y + score
+       ind_sc = ind_sc + str(score)
+       j = j + 1
      
-   k[1] = y
+   y = y/j  
+   k[1] = round(y,2)
    k[2] = line[0]
    k[3] = translated_text
+   k[4] = ind_sc
    writer.writerow(k)
    
 # reader = csv.reader(f, delimiter='\t')
