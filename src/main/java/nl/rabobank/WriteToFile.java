@@ -23,7 +23,7 @@ public class WriteToFile {
             file = new FileWriter(fileName);
             for (Feeds feed : feeds) {
                 file.write(feed.getFeedDate() + SEPERATOR + checkEmpty(feed.getFeedBy()) + SEPERATOR
-                        + checkEmpty(feed.getLocation()) + SEPERATOR + SEPERATOR + feed.getFeed());
+                        + checkEmpty(feed.getLocation()) + SEPERATOR + feed.getFeed());
                 file.write(System.lineSeparator());
             }
         } catch (IOException e) {
