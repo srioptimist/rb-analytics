@@ -33,12 +33,12 @@ public class TwitterSearch {
 
     // What we want to search for in this program. Justin Bieber always returns as many results as you could
     // ever want, so it's safe to assume we'll get multiple pages back...
-    // private static final String[] SEARCH_TERM = {"rabo","abn amro","ING bank"};
+    // private static final String[] SEARCH_TERM = {"rabo","abn amro","ingnl"};
 
     // private static final String[] SEARCH_TERM =
     // {"Kaart","pinpas","bankpas","Mobiel","mobiel bankieren","internet bankieren","internet banking","sparen","spaarrekening"};
 
-    private static final String[] SEARCH_TERM = { "rabo bankpas" };
+    private static final String[] SEARCH_TERM = { "ingnl" };
 
     /**
      * Replace newlines and tabs in text with escaped versions to making printing cleaner
