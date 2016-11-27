@@ -24,6 +24,8 @@ import com.restfb.types.Post;
 public class FacebookPageSearch {
 
     private static final String[] SEARCH_TERM = { "rabobank", "abn amro", "ING Nederland" };
+    public static final int PAGE_LIMIT = 50;
+    public static final int POST_LIMIT = 100;
 
     // private static final String[] SEARCH_TERM =
     // {"Kaart","pinpas","bankpas","Mobiel","mobiel bankieren","internet bankieren","internet banking","sparen","spaarrekening"};
@@ -47,10 +49,10 @@ public class FacebookPageSearch {
 
         /** Search Page **/
         Connection<Page> pageResults = fbClient.fetchConnection("search", Page.class, Parameter.with("q", searchText),
-                Parameter.with("type", "page"));
-        System.out.println( pageResults.getData().size() + " pages searched for" + searchText);
+                Parameter.with("type", "page"), Parameter.with("limit", PAGE_LIMIT));
+        System.out.println( pageResults.getData().size() + " pages searched for " + searchText);
         for (Page page : pageResults.getData()) {
-            Connection<Post> postFeed = fbClient.fetchConnection(page.getId() + "/feed", Post.class);
+            Connection<Post> postFeed = fbClient.fetchConnection(page.getId() + "/feed", Post.class, Parameter.with("limit", POST_LIMIT));
             System.out.println("No of Posts in " + page.getName() + " is " + postFeed.getData().size() + " and url is fb.com/" + page.getId());
             /** Search Post **/
             for (Post post : postFeed.getData()) {
@@ -60,17 +62,21 @@ public class FacebookPageSearch {
                     /** Search Comments **/
                     for (Comment comment : comments.getData()) {
                         String mess = comment.getMessage().replaceAll("\n", " ").replaceAll("\r", " ");
-                        // if(comment.getMessage().contains("Kaart") || comment.getMessage().contains("bankpas") ||  comment.getMessage().contains("internet") ||  comment.getMessage().contains("mobiel bankieren")
-                        //       || comment.getMessage().contains("pinpas")  ||  comment.getMessage().contains("sparen") || comment.getMessage().contains("spaarrekening") || comment.getMessage().contains("mobiel")) {
+//                         if(filterFeedsBasedOnKeywords(comment)) {
                         feeds.add(new Feeds(comment.getCreatedTime().toString(), comment.getFrom().getName(), mess,
                                 comment.getId(), "", post.getPlace() != null ? post.getPlace().getLocationAsString() : null));
-                        // }
+                      //   }
                     }
                 }
             }
         }
         return feeds;
 
+    }
+
+    private static boolean filterFeedsBasedOnKeywords(Comment comment) {
+        return comment.getMessage().contains("Kaart") || comment.getMessage().contains("bankpas") ||  comment.getMessage().contains("internet") ||  comment.getMessage().contains("mobiel bankieren")
+              || comment.getMessage().contains("pinpas")  ||  comment.getMessage().contains("sparen") || comment.getMessage().contains("spaarrekening") || comment.getMessage().contains("mobiel");
     }
 
 }
