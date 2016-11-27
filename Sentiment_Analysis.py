@@ -14,43 +14,6 @@ api_key = 'AIzaSyChR_RVUHz6eBVUf9BgjKxJVCyHeiCNDXk'
 s1 = strftime("%H:%M:%S", gmtime())
 print('Starting time: ', s1)
 
-i = 0
-k = [None] * 5
-l = [' ',' ',' ',' ',' ']
-g = open('C:/Temp/Vishwesh/Text analytics/sentiment_output.txt', 'w',newline='',encoding='utf-8')
-h = open('C:/Temp/Vishwesh/Text analytics/entity_output.txt', 'w',newline='',encoding='utf-8')
-f = open('C:/Temp/Vishwesh/Text analytics/cards.txt', 'r')
-reader = csv.reader(f, delimiter='\t')
-writer = csv.writer(g, delimiter='\t')
-writer_ent = csv.writer(h,delimiter ='\t')
-for line in reader:
-   i = i+1
-   service = build('translate', 'v2', developerKey=api_key)
-   #request = service.translations().list(source='nl',target='en', q=line[3])
-   request = service.translations().list(target='en', q=line[3])
-   response = request.execute()
-   translated_text = response['translations'][0]['translatedText']
-   service = build('language','v1beta1',developerKey=api_key)
-
-   request = service.documents().annotateText(
-          body={
-              'document':{
-import csv
-import argparse
-from googleapiclient import discovery
-import time
-from time import gmtime, strftime
-from datetime import datetime
-import pprint
-import sys
-from apiclient.discovery import build
-
-api_key = 'AIzaSyChR_RVUHz6eBVUf9BgjKxJVCyHeiCNDXk'
-
-
-s1 = strftime("%H:%M:%S", gmtime())
-print('Starting time: ', s1)
-
 # Take file name as argument 
 fl = sys.argv[1]
 
