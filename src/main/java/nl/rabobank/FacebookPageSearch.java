@@ -23,9 +23,9 @@ import com.restfb.types.Post;
  */
 public class FacebookPageSearch {
 
-    private static final String[] SEARCH_TERM = { "rabobank", "abn amro", "ING Nederland" };
-    public static final int PAGE_LIMIT = 50;
-    public static final int POST_LIMIT = 100;
+    private static final String[] SEARCH_TERM = { "abn amro", "ING Nederland" };
+    public static final int PAGE_LIMIT = 20;
+    public static final int POST_LIMIT = 50;
 
     // private static final String[] SEARCH_TERM =
     // {"Kaart","pinpas","bankpas","Mobiel","mobiel bankieren","internet bankieren","internet banking","sparen","spaarrekening"};
@@ -49,7 +49,7 @@ public class FacebookPageSearch {
 
         /** Search Page **/
         Connection<Page> pageResults = fbClient.fetchConnection("search", Page.class, Parameter.with("q", searchText),
-                Parameter.with("type", "page"), Parameter.with("limit", PAGE_LIMIT));
+                Parameter.with("type", "page"),   Parameter.with("limit", PAGE_LIMIT));
         System.out.println( pageResults.getData().size() + " pages searched for " + searchText);
         for (Page page : pageResults.getData()) {
             Connection<Post> postFeed = fbClient.fetchConnection(page.getId() + "/feed", Post.class, Parameter.with("limit", POST_LIMIT));
@@ -60,13 +60,13 @@ public class FacebookPageSearch {
                     Connection<Comment> comments = fbClient.fetchConnection(post.getId() + "/comments",
                             Comment.class, Parameter.with("limit", 50000));
                     /** Search Comments **/
-                    for (Comment comment : comments.getData()) {
-                        String mess = comment.getMessage().replaceAll("\n", " ").replaceAll("\r", " ");
-//                         if(filterFeedsBasedOnKeywords(comment)) {
-                        feeds.add(new Feeds(comment.getCreatedTime().toString(), comment.getFrom().getName(), mess,
-                                comment.getId(), "", post.getPlace() != null ? post.getPlace().getLocationAsString() : null));
-                      //   }
-                    }
+//                    for (Comment comment : comments.getData()) {
+                        String mess = post.getMessage().replaceAll("\n", " ").replaceAll("\r", " ");
+////                         if(filterFeedsBasedOnKeywords(comment)) {
+                        feeds.add(new Feeds(post.getCreatedTime().toString(), post.getName(), mess,
+                                post.getId(), "", post.getPlace() != null ? post.getPlace().getLocationAsString() : null));
+//                      //   }
+//                    }
                 }
             }
         }
