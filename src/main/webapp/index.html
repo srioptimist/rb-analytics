@@ -25,34 +25,39 @@ table, th, td {
 </head>
 <body ng-controller="rbAnalyticsCtrl as rbAnalyticsC">
 
-<div class="reasons" ng-if="!tweets.length>0">
+<div class="reasons" ng-if="!flag && !feeds.length>0">
 	Enter your search text <input type="text" name="searchText" ng-model="searchText" /></br>
-	Submit : <input ng-click="searchTweets(searchText)" type="submit"/> 
+	Submit : <input ng-click="searchFeeds(searchText)" type="submit"/> 
  </div>
- <div class="reasons" ng-if="tweets.length>0">tweets collected from various social networks are listed below </div>
-<div class="reasons" ng-if="tweets.length>0">
+ <div class="reasons" ng-if="feeds.length>0">Feeds from social networks</div>
+ <div class="reasons" ng-if="flag && feeds.length===0">Sorry, no results found!</div>
+<div class="reasons" ng-if="feeds.length>0">
   <div style="float: left; width: 100px;"></div>  
  <div id="chart-container" style="float: left; width: 600px;">
  	 <table >
 		  <tr>
 		    <th>S.no</th>
-		    <th>Tweet Date</th>
-		    <th>Tweet By</th>
-		    <th>Tweet</th>
+		    <th>Source</th>
+		    <th>Feed Date</th>
+		    <th>Feed By</th>
+		    <th>Location</th>
+		    <th>Feed</th>
 		  </tr>
-		  <tr ng-repeat="tweet in tweets">
+		  <tr ng-repeat="feed in feeds">
 		  	<td>{{$index+1}}</td>
-		    <td>{{tweet.tweetDate}}</td> 
-		    <td>{{tweet.tweetBy}}</td>
-		    <td>{{tweet.tweet}}</td>
+		  	<td>{{feed.source}}</td>
+		    <td>{{feed.feedDate | date:'dd-MM-yyyy HH:mm:ss'}}</td> 
+		    <td>{{feed.feedBy}}</td>
+		    <td>{{feed.location}}</td>
+		    <td>{{feed.feed}}</td>
 		  </tr>
 		</table>
  </div>
  <div style="float: left; width: 100px;"></div> 
  <br style="clear: left;" /> 
 </div>
-<div class="reasons" ng-if="tweets.length>0">
-	<input ng-click="clearTweets()" value="clear" type="submit"/>
+<div class="reasons" ng-if="flag">
+	<input ng-click="clearFeeds()" value="home" type="submit"/>
 </div>
 </body>
 </html>

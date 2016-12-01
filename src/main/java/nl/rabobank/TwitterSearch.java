@@ -22,23 +22,23 @@ public class TwitterSearch {
     private static final String CONSUMER_SECRET = "NFGcENE985DQMUcfUuTVoGE60xcAWtGBfizDaKHzL7wFQFUULr";
 
     // How many tweets to retrieve in every call to Twitter. 100 is the maximum allowed in the API
-    private static final int TWEETS_PER_QUERY = 100;
+    private static final int TWEETS_PER_QUERY = 10;
 
     // This controls how many queries, maximum, we will make of Twitter before cutting off the results.
     // You will retrieve up to MAX_QUERIES*TWEETS_PER_QUERY tweets.
     //
     // If you set MAX_QUERIES high enough (e.g., over 450), you will undoubtedly hit your rate limits
     // and you an see the program sleep until the rate limits reset
-    private static final int MAX_QUERIES = 400;
+    private static final int MAX_QUERIES = 5;
 
     // What we want to search for in this program. Justin Bieber always returns as many results as you could
     // ever want, so it's safe to assume we'll get multiple pages back...
-    // private static final String[] SEARCH_TERM = {"rabo","abn amro","ingnl"};
+     private static final String[] SEARCH_TERM = {"rabobank","abn amro","ingnl"};
 
     // private static final String[] SEARCH_TERM =
     // {"Kaart","pinpas","bankpas","Mobiel","mobiel bankieren","internet bankieren","internet banking","sparen","spaarrekening"};
 
-    private static final String[] SEARCH_TERM = { "ingnl" };
+   // private static final String[] SEARCH_TERM = { "ingnl" };
 
     /**
      * Replace newlines and tabs in text with escaped versions to making printing cleaner
@@ -203,7 +203,7 @@ public class TwitterSearch {
                 // worth of tweets, and uncommon search terms can run out of week before they run out of tweets
                 if (r.getTweets().size() == 0) {
                     System.out.println("No more tweets to fetch!");
-                    break; // Nothing? We must be done
+                   // break; // Nothing? We must be done
                 }
 
                 // loop through all the tweets and process them. In this sample program, we just print them
@@ -225,7 +225,7 @@ public class TwitterSearch {
                     // s.getCreatedAt()
                     // .toString(), s.getUser().getName(), s.getUser().getLocation(), s.getUser().getEmail(), s
                     // .getUser().getScreenName(), cleanText(s.getText()));
-                    feeds.add(new Feeds(s.getCreatedAt().toString(), s.getUser().getName(), cleanText(s.getText()),
+                    feeds.add(new Feeds("Twitter", s.getCreatedAt().toString(), s.getUser().getName(), cleanText(s.getText()),
                             String.valueOf(s.getId()), s.getUser().getEmail(), s.getUser().getLocation()));
                 }
 
