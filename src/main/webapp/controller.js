@@ -2,20 +2,23 @@ var rbAnalyticsController = angular.module('rbAnalyticsController', []);
 
 rbAnalyticsController.controller("rbAnalyticsCtrl",['$scope','$http',function($scope,$http){
 	
-	$scope.tweets = [];
+	$scope.feeds = [];
+	$scope.flag = false;
 	
-	$scope.searchTweets = function(searchText){
+	$scope.searchFeeds = function(searchText){
 		
 		$http.get("rest/rbAnalytics/"+searchText+"")
 	    .success(
 	    			function(response) {
-	    				$scope.tweets = response;
+	    				$scope.feeds = response;
+	    				$scope.flag = true;
 	    			}
 	    );
 	};
 	
-  $scope.clearTweets = function(){
-	  $scope.tweets = [];
+  $scope.clearFeeds = function(){
+	  $scope.feeds = [];
+	  $scope.flag = false;
   };
 	 
 }]);
