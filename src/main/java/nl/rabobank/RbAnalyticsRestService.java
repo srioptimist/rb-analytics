@@ -2,7 +2,6 @@ package nl.rabobank;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -22,7 +21,6 @@ public class RbAnalyticsRestService {
         final List<Feeds> feeds = new ArrayList<Feeds>();
         feeds.addAll(TwitterSearch.getTweets(searchText));
         feeds.addAll(FacebookPageSearch.getFeeds(searchText));
-        Collections.sort(feeds,new FeedComparator());
         WriteToFile.write(feeds, searchText);
         return Response.status(Response.Status.OK).entity(feeds).build();
     }

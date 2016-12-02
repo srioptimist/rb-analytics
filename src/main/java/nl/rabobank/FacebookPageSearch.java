@@ -23,9 +23,9 @@ import com.restfb.types.Post;
  */
 public class FacebookPageSearch {
 
-    private static final String[] SEARCH_TERM = { "ING Nederland" };
-    public static final int PAGE_LIMIT = 1;
-    public static final int POST_LIMIT = 10;
+    private static final String[] SEARCH_TERM = { "abn amro", "ING Nederland" };
+    public static final int PAGE_LIMIT = 20;
+    public static final int POST_LIMIT = 50;
 
     // private static final String[] SEARCH_TERM =
     // {"Kaart","pinpas","bankpas","Mobiel","mobiel bankieren","internet bankieren","internet banking","sparen","spaarrekening"};
@@ -63,14 +63,13 @@ public class FacebookPageSearch {
 //                    for (Comment comment : comments.getData()) {
                         String mess = post.getMessage().replaceAll("\n", " ").replaceAll("\r", " ");
 ////                         if(filterFeedsBasedOnKeywords(comment)) {
-                        feeds.add(new Feeds("Facebook", post.getCreatedTime().toString(), post.getName(), mess,
+                        feeds.add(new Feeds(post.getCreatedTime().toString(), post.getName(), mess,
                                 post.getId(), "", post.getPlace() != null ? post.getPlace().getLocationAsString() : null));
 //                      //   }
 //                    }
                 }
             }
         }
-        System.out.println("Search completed for facebook!");
         return feeds;
 
     }
