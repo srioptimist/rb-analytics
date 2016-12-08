@@ -4,34 +4,23 @@
  <script src="angular.js"></script>
 <script src="app.js"></script>
 <script src="controller.js"></script>
-<style>
-table, th, td {
-    border: 1px solid green;
-}
-.reasons {
-	width:800px; 
-	margin:0 auto;
-	padding-top: 30px;
-	color: blue;
-}
+<link rel="stylesheet" href="style.css">
 
-.back {
-	width:800px; 
-	margin:0 auto;
-	padding-top: 20px;
-}
-
-</style>
 </head>
 <body ng-controller="rbAnalyticsCtrl as rbAnalyticsC">
 
 <div class="reasons" ng-if="!flag && !feeds.length>0">
-	Enter your search text <input type="text" name="searchText" ng-model="searchText" /></br>
-	Submit : <input ng-click="searchFeeds(searchText)" type="submit"/> 
+
+	<form class="form-wrapper cf">
+		<input type="text" placeholder="Type keywords to search in Social Media ..." name="searchText" ng-model="searchText" required>
+		<button  ng-click="searchFeeds(searchText)" type="submit">Search</button>
+	</form>
+
  </div>
- <div class="reasons" ng-if="feeds.length>0">Feeds from social networks</div>
+ <div class="reasons" ng-if="feeds.length>0"><div class="byline"><p>Feeds from social networks</p></div></div>
  <div class="reasons" ng-if="flag && feeds.length===0">Sorry, no results found!</div>
 <div class="reasons" ng-if="feeds.length>0">
+	<div class="byline">
   <div style="float: left; width: 100px;"></div>  
  <div id="chart-container" style="float: left; width: 600px;">
  	 <table >
@@ -46,18 +35,21 @@ table, th, td {
 		  <tr ng-repeat="feed in feeds">
 		  	<td>{{$index+1}}</td>
 		  	<td>{{feed.source}}</td>
-		    <td>{{feed.feedDate | date:'dd-MM-yyyy HH:mm:ss'}}</td> 
+		    <td>{{feed.feedDate | date:'dd-MM-yyyy HH:mm:ss'}}</td>
 		    <td>{{feed.feedBy}}</td>
 		    <td>{{feed.location}}</td>
 		    <td>{{feed.feed}}</td>
 		  </tr>
 		</table>
  </div>
+		</div>
  <div style="float: left; width: 100px;"></div> 
  <br style="clear: left;" /> 
 </div>
 <div class="reasons" ng-if="flag">
-	<input ng-click="clearFeeds()" value="home" type="submit"/>
+
+		<button  ng-click="clearFeeds()" type="submit">Home</button>
+
 </div>
 </body>
 </html>
